@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>filemanager-core2 — демо</title>
+  <style>
+    body { font: 14px system-ui, sans-serif; margin: 24px; color: #222; }
+    .row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+    button { padding: 8px 14px; font: inherit; cursor: pointer; }
+    #embedded { height: 520px; }
+    pre { background: #f4f4f4; padding: 8px; min-height: 2em; }
+  </style>
+</head>
+<body>
+  <h1>@besnovatyj/filemanager-core2 — демо на MemoryFsClient</h1>
+  <p>Сборка: <code>npm run build</code> → <code>dist/demo.js</code>. Бэкенд не нужен: файловая система живёт в памяти страницы.</p>
+  <div class="row">
+    <button onclick="fmDemo.open('manager')">Открыть окно (manager)</button>
+    <button onclick="fmDemo.open('picker')">Открыть окно (picker)</button>
+    <button onclick="fmDemo.mount()">Встроить в страницу</button>
+    <button onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.querySelectorAll('fm-explorer').forEach(e => e.dataset.theme = document.documentElement.dataset.theme)">Тема</button>
+  </div>
+  <h3>Выбрано (picker):</h3>
+  <pre id="picked"></pre>
+  <h3>Встроенный режим:</h3>
+  <div id="embedded"></div>
+  <script type="module" src="../dist/demo.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+{
+  "name": "@besnovatyj/filemanager-core2",
+  "version": "2.0.0-alpha.1",
+  "description": "Файловый менеджер «как проводник Windows» для браузера: framework-agnostic ядро (TypeScript strict, Web Components), самоописываемый API bescms-fs.",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "docs/API-CONTRACT.md"
+  ],
+  "sideEffects": [
+    "./src/ui/**"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/besnovatyj/filemanager-core.git"
+  },
+  "keywords": [
+    "file-manager",
+    "explorer",
+    "web-components",
+    "typescript",
+    "flysystem"
+  ],
+  "author": "Besnovatyj",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node esbuild.js && npm run types",
+    "build:js": "node esbuild.js",
+    "build:watch": "node esbuild.js --watch",
+    "types": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "type-check": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint src",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run type-check && npm test && npm run build && npm run types"
+  },
+  "dependencies": {
+    "tus-js-client": "^4.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "esbuild": "^0.28.0",
+    "eslint": "^10.2.0",
+    "globals": "^17.5.0",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.58.2",
+    "vitest": "^3.2.4"
+  },
+  "engines": {
+    "node": ">= 23.3.0",
+    "npm": ">= 10.0.0"
+  }
+}
