@@ -219,7 +219,7 @@
 - [x] `thumbnail` (миниатюры с серверным перекодированием — без inline SVG/HTML): `fs/thumbnail/*`, файловый кэш, `describe.thumbnails.sizes`, `FmContentPane` в режимах плитка/значки.
 - [ ] `write` (сохранение текстовых файлов) + редактор.
 - [x] `search` (рекурсивный поиск по имени, серверная реализация): `Searcher` с бюджетами обхода, `SearchStore`/`SearchFeature`, результаты в панели содержимого с расположением.
-- [ ] `archive`/`extract` (zip) с защитой от zip-bomb (лимиты entries/размера).
+- [x] `archive`/`extract` (zip) с защитой от zip-bomb (лимиты entries/размера) и zip-slip: `fs/archive/Archiver`, команды «Добавить в архив»/«Извлечь» в контекстном меню.
 - [ ] Асинхронные задания (`jobs/*`, SSE-прогресс) для больших пакетов.
 - [x] Chunked/resumable upload (tus): собственный сервер протокола в `yii2-cms-file/src/fs/tus` +
       `TusController` + `upload-finalize` + `File/tus/purge`; клиент — `TusUploadStrategy` (tus-js-client, MIT).
@@ -288,6 +288,12 @@
 4. Предпросмотр, undo, тесты UI (vitest + jsdom), Playwright — Фаза 10.
 
 ## 7. Журнал
+
+- 2026-09-19 (8) — Архивы: операции `archive`/`extract` (§9.16–9.17) — `fs/archive/{Archiver,
+  ArchiveBudget, TempFile, ExtractResult}` (ZipArchive через временные файлы, источники из любых
+  хранилищ; распаковка — каждая запись через `Uploader`/`DirectoryCreator`, zip-slip и бюджеты
+  `maxTransferEntries`/`archiveMaxBytes` до записи), `ArchiveFeature` (меню элемента, очередь,
+  `rename` при конфликтах), демо-клиент собирает «архив»-заглушку.
 
 - 2026-09-19 (7) — Поиск: операция `search` (§9.15) — `fs/operation/{SearchOptions, NameMatcher,
   SearchBudget, Searcher, SearchResult}` (обход `listContents(deep)`, бюджеты `searchMaxResults`/

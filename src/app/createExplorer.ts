@@ -23,7 +23,7 @@ import {CommandRegistry} from '@/commands/CommandRegistry';
 import {Keymap} from '@/commands/Keymap';
 import {
   NavigationFeature, SelectionFeature, CreateFolderFeature, RenameFeature, DeleteFeature, TransferFeature,
-  ClipboardFeature, UploadFeature, DownloadFeature, PropertiesFeature, ViewFeature, PickFeature, SearchFeature, type Feature,
+  ClipboardFeature, UploadFeature, DownloadFeature, PropertiesFeature, ViewFeature, PickFeature, SearchFeature, ArchiveFeature, type Feature,
 } from '@/features';
 import {FmMenu, type MenuEntry} from '@/ui/primitives/FmMenu';
 import {DialogHost} from '@/ui/explorer/dialogs/DialogHost';
@@ -98,10 +98,11 @@ export function createExplorer(config: ExplorerConfig): Explorer {
   const upload = new UploadFeature();
   const del = new DeleteFeature();
   const searchFeature = new SearchFeature();
+  const archiveFeature = new ArchiveFeature();
   const features: Feature[] = [
     navigation, new SelectionFeature(), new CreateFolderFeature(), rename, del, transfer,
     new ClipboardFeature(transfer), upload, new DownloadFeature(), new PropertiesFeature(), new ViewFeature(),
-    new PickFeature(() => closeHandler()), searchFeature,
+    new PickFeature(() => closeHandler()), searchFeature, archiveFeature,
   ];
   disposables.add(() => features.forEach((f) => f.dispose()));
 
@@ -113,7 +114,7 @@ export function createExplorer(config: ExplorerConfig): Explorer {
     ctx, commands, menu,
     dnd: config.adapters?.dnd ?? new Html5DndAdapter(),
     createVirtualizer: config.adapters?.virtualizer ?? (() => new UniformGridVirtualizer()),
-    features: {navigation, rename, upload, transfer, delete: del, search: searchFeature},
+    features: {navigation, rename, upload, transfer, delete: del, search: searchFeature, archive: archiveFeature},
     openMenu: (ids, at, extra: MenuEntry[] = []) => {
       const theme = themeOf();
       if (theme) menu.dataset.theme = theme;

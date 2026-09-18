@@ -57,6 +57,8 @@ export interface Limits {
   contentMaxBytes: number;
   /** Максимум результатов одного `search` (§9.15). */
   searchMaxResults?: number;
+  /** Максимум несжатых байт на сборку/распаковку архива (§9.16–9.17). */
+  archiveMaxBytes?: number;
 }
 
 /** Ответ `describe` (§6). */

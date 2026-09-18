@@ -16,4 +16,5 @@ export {PropertiesFeature} from './PropertiesFeature';
 export {ViewFeature} from './ViewFeature';
 export {PickFeature} from './PickFeature';
 export {SearchFeature} from './SearchFeature';
+export {ArchiveFeature} from './ArchiveFeature';
 export {apiErrorMessage, nameViolationMessage} from './nameMessages';

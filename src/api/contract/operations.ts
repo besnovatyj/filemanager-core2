@@ -137,6 +137,34 @@ export interface SearchResponse {
   scanned: number;
 }
 
+/** §9.16 */
+export interface ArchiveRequest {
+  paths: string[];
+  /** Папка, куда положить архив. */
+  target: string;
+  /** Имя архива (расширение .zip добавится); по умолчанию — имя единственного источника или `archive`. */
+  name?: string;
+  onConflict?: ConflictStrategy;
+}
+
+/** §9.17 */
+export interface ExtractRequest {
+  path: string;
+  /** Папка назначения; без неё рядом с архивом создаётся папка с его именем. */
+  target?: string;
+  /** Стратегия для файлов, которые уже есть в назначении. */
+  onConflict?: ConflictStrategy;
+}
+
+export interface ExtractResponse {
+  /** Папка, в которую распаковано. */
+  node: Node;
+  total: number;
+  extracted: number;
+  /** Пропущенные записи (первые 100): недопустимый путь, политика, конфликт при `fail`. */
+  skipped: {name: string; code: string; message: string}[];
+}
+
 export interface CallOptions {
   signal?: AbortSignal;
   /** Только для upload: прогресс отправки 0..1. */

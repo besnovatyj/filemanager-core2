@@ -22,6 +22,7 @@ const ICONS: Record<string, string> = {
   'file': '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
   'drive': '<rect x="3" y="8" width="18" height="10" rx="2"/><path d="M7 13h.01M11 13h6"/>',
   'archive': '<rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8M10 12h4"/>',
+  'extract': '<rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><path d="M12 11v6M9 14l3 3 3-3"/>',
   'cloud': '<path d="M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z"/>',
   'computer': '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
   'upload': '<path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 20h16"/>',

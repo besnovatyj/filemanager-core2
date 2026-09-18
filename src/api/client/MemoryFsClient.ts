@@ -16,7 +16,7 @@ import type {DescribeResponse} from '@/api/contract/describe';
 import {CONTRACT_NAME, CONTRACT_VERSION} from '@/api/contract/describe';
 import type {
   CallOptions, ContentRequest, ContentResponse, DeleteRequest, ListRequest, ListResponse, MkdirRequest,
-  RenameRequest, StatRequest, TransferRequest, TreeRequest, TreeResponse, UploadRequest, UploadResponse, SearchRequest, SearchResponse} from '@/api/contract/operations';
+  RenameRequest, StatRequest, TransferRequest, TreeRequest, TreeResponse, UploadRequest, UploadResponse, SearchRequest, SearchResponse, ArchiveRequest, ExtractRequest, ExtractResponse} from '@/api/contract/operations';
 import type {ItemResult, OperationReport} from '@/api/contract/report';
 import type {ErrorBody} from '@/api/contract/errors';
 import {ApiError} from '@/api/codec/ApiError';
@@ -81,7 +81,7 @@ export class MemoryFsClient implements FsClient {
     this.naming = {...DEFAULT_NAME_RULES, ...(options.naming ?? {})};
     this.validator = new NameValidator(this.naming);
     this.latency = options.latencyMs ?? 0;
-    this.allowed = new Set(options.allowedOperations ?? ['describe', 'list', 'tree', 'stat', 'content', 'download', 'mkdir', 'rename', 'move', 'copy', 'delete', 'upload', 'search']);
+    this.allowed = new Set(options.allowedOperations ?? ['describe', 'list', 'tree', 'stat', 'content', 'download', 'mkdir', 'rename', 'move', 'copy', 'delete', 'upload', 'search', 'archive', 'extract']);
     this.mounts = options.mounts.map((m) => ({
       id: m.id,
       label: m.label,
@@ -124,7 +124,7 @@ export class MemoryFsClient implements FsClient {
       defaultMount: this.mounts[0]?.id ?? null,
       naming: this.naming,
       upload: {maxFileSize: 10 * 1024 * 1024, maxFilesPerRequest: 1, allowedExtensions: null, allowedMime: null, chunked: false},
-      features: {jobs: false, thumbnails: false, search: true, write: false, archive: false},
+      features: {jobs: false, thumbnails: false, search: true, write: false, archive: true},
       limits: {listPageSize: 2000, maxBatchItems: 500, contentMaxBytes: 1_048_576},
     };
   }
@@ -157,6 +157,30 @@ export class MemoryFsClient implements FsClient {
       total: items.length,
       sorted: true,
     };
+  }
+
+  /** Демо-архив: файл `.zip`, содержимое — список упакованных путей (настоящего ZIP в памяти нет). */
+  async archive(request: ArchiveRequest, options: CallOptions = {}): Promise<UploadResponse> {
+    await this.delay(options.signal);
+    this.assertAllowed('archive');
+    if (request.paths.length === 0) throw new ApiError('invalid_operation', 'Нечего архивировать');
+    const target = this.parse(request.target);
+    this.assertWritable(this.resolveDir(target).mount);
+    for (const p of request.paths) this.resolveExisting(this.parse(p));
+    const first = this.parse(request.paths[0] as string);
+    const base = request.name?.trim() || (request.paths.length === 1 ? splitName(first.name).stem : 'archive');
+    const content = new TextEncoder().encode(request.paths.join('\n'));
+    const file = new File([content], base.toLowerCase().endsWith('.zip') ? base : `${base}.zip`, {type: 'application/zip'});
+    const uploadRequest: UploadRequest = {path: target.toString(), file};
+    if (request.onConflict) uploadRequest.onConflict = request.onConflict;
+    return this.upload(uploadRequest);
+  }
+
+  async extract(request: ExtractRequest, options: CallOptions = {}): Promise<ExtractResponse> {
+    await this.delay(options.signal);
+    this.assertAllowed('extract');
+    this.resolveExisting(this.parse(request.path));
+    throw new ApiError('unsupported', 'Клиент в памяти не распаковывает архивы');
   }
 
   async search(request: SearchRequest, options: CallOptions = {}): Promise<SearchResponse> {

@@ -35,10 +35,10 @@ export interface MountInfo {
 
 /** Операция контракта, на которую спрашиваем разрешение. */
 export type OperationName =
-  | 'describe' | 'list' | 'tree' | 'stat' | 'content' | 'download' | 'preview' | 'thumbnail' | 'search'
+  | 'describe' | 'list' | 'tree' | 'stat' | 'content' | 'download' | 'preview' | 'thumbnail' | 'search' | 'archive' | 'extract'
   | 'mkdir' | 'rename' | 'move' | 'copy' | 'delete' | 'upload';
 
-const MUTATING: ReadonlySet<OperationName> = new Set(['mkdir', 'rename', 'move', 'copy', 'delete', 'upload']);
+const MUTATING: ReadonlySet<OperationName> = new Set(['mkdir', 'rename', 'move', 'copy', 'delete', 'upload', 'archive', 'extract']);
 
 /**
  * Сводные возможности: «может ли ТЕКУЩИЙ пользователь выполнить операцию над ЭТИМ узлом».
@@ -97,7 +97,7 @@ export class Capabilities {
     if (perms) {
       if (operation === 'rename' && perms.rename === false) return false;
       if (operation === 'delete' && perms.delete === false) return false;
-      if ((operation === 'mkdir' || operation === 'upload') && perms.write === false) return false;
+      if ((operation === 'mkdir' || operation === 'upload' || operation === 'archive' || operation === 'extract') && perms.write === false) return false;
       if ((operation === 'list' || operation === 'content' || operation === 'download' || operation === 'preview' || operation === 'thumbnail' || operation === 'search') && perms.read === false) return false;
     }
     return true;
@@ -123,6 +123,8 @@ export class Capabilities {
       case 'download': case 'preview': return c.download;
       case 'thumbnail': return c.thumbnail && c.download;
       case 'search': return c.search && c.list;
+      case 'archive': return c.upload;
+      case 'extract': return c.upload && c.mkdir;
       case 'mkdir': return c.mkdir;
       case 'rename': return c.rename;
       case 'move': return c.move;

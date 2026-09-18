@@ -6,10 +6,10 @@ import type {Node} from '@/domain/node/Node';
 import type {DescribeResponse} from '@/api/contract/describe';
 import type {
   CallOptions, ContentRequest, ContentResponse, DeleteRequest, ListRequest, ListResponse, MkdirRequest,
-  RenameRequest, StatRequest, TransferRequest, TreeRequest, TreeResponse, UploadFinalizeRequest, UploadRequest, UploadResponse, SearchRequest, SearchResponse} from '@/api/contract/operations';
+  RenameRequest, StatRequest, TransferRequest, TreeRequest, TreeResponse, UploadFinalizeRequest, UploadRequest, UploadResponse, SearchRequest, SearchResponse, ArchiveRequest, ExtractRequest, ExtractResponse} from '@/api/contract/operations';
 import type {OperationReport} from '@/api/contract/report';
 import {
-  assertContent, assertDescribe, assertListing, assertNodeResponse, assertReport, assertTree, assertUpload, assertSearch} from '@/api/codec/guards';
+  assertContent, assertDescribe, assertListing, assertNodeResponse, assertReport, assertTree, assertUpload, assertSearch, assertExtract} from '@/api/codec/guards';
 import type {Transport} from '@/api/transport/Transport';
 import type {FsClient} from './FsClient';
 
@@ -70,6 +70,14 @@ export class HttpFsClient implements FsClient {
     if (options.signal) uploadOptions.signal = options.signal;
     if (options.onProgress) uploadOptions.onProgress = options.onProgress;
     return assertUpload(await this.transport.postMultipart('upload', form, uploadOptions));
+  }
+
+  async archive(request: ArchiveRequest, options: CallOptions = {}): Promise<UploadResponse> {
+    return assertUpload(await this.transport.postJson('archive', request, options.signal));
+  }
+
+  async extract(request: ExtractRequest, options: CallOptions = {}): Promise<ExtractResponse> {
+    return assertExtract(await this.transport.postJson('extract', request, options.signal));
   }
 
   async search(request: SearchRequest, options: CallOptions = {}): Promise<SearchResponse> {

@@ -4,7 +4,7 @@
 
 import type {CommandContext} from '@/commands/CommandContext';
 import type {CommandRegistry} from '@/commands/CommandRegistry';
-import type {NavigationFeature, RenameFeature, UploadFeature, TransferFeature, DeleteFeature, SearchFeature} from '@/features';
+import type {NavigationFeature, RenameFeature, UploadFeature, TransferFeature, DeleteFeature, SearchFeature, ArchiveFeature} from '@/features';
 import type {FmMenu, MenuEntry} from '@/ui/primitives/FmMenu';
 import type {DndAdapter} from '@/ui/ports/DndAdapter';
 import type {Virtualizer} from '@/ui/ports/Virtualizer';
@@ -23,6 +23,7 @@ export interface ExplorerDeps {
     readonly transfer: TransferFeature;
     readonly delete: DeleteFeature;
     readonly search: SearchFeature;
+    readonly archive: ArchiveFeature;
   };
   /** Общее всплывающее меню приложения. */
   readonly menu: FmMenu;
@@ -63,7 +64,7 @@ export function entriesFromIds(commands: CommandRegistry, ids: readonly string[]
 }
 
 /** Контекстное меню элемента (файла/папки). */
-export const ITEM_MENU: readonly string[] = ['open', 'pick', '|', 'cut', 'copy', 'paste', '|', 'rename', 'delete', 'download', '|', 'properties'];
+export const ITEM_MENU: readonly string[] = ['open', 'pick', '|', 'cut', 'copy', 'paste', '|', 'rename', 'delete', 'download', '|', 'archive', 'extract', '|', 'properties'];
 /** Контекстное меню пустого места текущей папки. */
 export const FOLDER_MENU: readonly string[] = ['new-folder', 'upload', 'paste', '|', 'refresh', 'select-all', '|', 'properties'];
 /** Меню «Вид». */

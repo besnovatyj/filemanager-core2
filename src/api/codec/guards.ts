@@ -4,7 +4,7 @@
 
 import type {Node, NodeKind, NodeMeta, NodePermissions} from '@/domain/node/Node';
 import type {DescribeResponse} from '@/api/contract/describe';
-import type {ListResponse, TreeResponse, UploadResponse, ContentResponse, SearchResponse} from '@/api/contract/operations';
+import type {ListResponse, TreeResponse, UploadResponse, ContentResponse, SearchResponse, ExtractResponse} from '@/api/contract/operations';
 import type {OperationReport} from '@/api/contract/report';
 import type {ErrorBody} from '@/api/contract/errors';
 import {ApiError} from './ApiError';
@@ -75,6 +75,17 @@ export function assertSearch(value: unknown): SearchResponse {
     items: assertNodeList(value.items),
     truncated: value.truncated === true,
     scanned: typeof value.scanned === 'number' ? value.scanned : 0,
+  };
+}
+
+export function assertExtract(value: unknown): ExtractResponse {
+  if (!isObject(value)) fail('extract не объект', value);
+  const skipped = Array.isArray(value.skipped) ? value.skipped : [];
+  return {
+    node: assertNode(value.node),
+    total: typeof value.total === 'number' ? value.total : 0,
+    extracted: typeof value.extracted === 'number' ? value.extracted : 0,
+    skipped: skipped.filter(isObject).map((s) => ({name: String(s.name ?? ''), code: String(s.code ?? 'internal'), message: String(s.message ?? '')})),
   };
 }
 

@@ -6,7 +6,7 @@ import type {Node} from '@/domain/node/Node';
 import type {DescribeResponse} from '@/api/contract/describe';
 import type {
   CallOptions, ContentRequest, ContentResponse, DeleteRequest, ListRequest, ListResponse, MkdirRequest,
-  RenameRequest, StatRequest, TransferRequest, TreeRequest, TreeResponse, UploadFinalizeRequest, UploadRequest, UploadResponse, SearchRequest, SearchResponse} from '@/api/contract/operations';
+  RenameRequest, StatRequest, TransferRequest, TreeRequest, TreeResponse, UploadFinalizeRequest, UploadRequest, UploadResponse, SearchRequest, SearchResponse, ArchiveRequest, ExtractRequest, ExtractResponse} from '@/api/contract/operations';
 import type {OperationReport} from '@/api/contract/report';
 
 /**
@@ -26,6 +26,10 @@ export interface FsClient {
   copy(request: TransferRequest, options?: CallOptions): Promise<OperationReport>;
   delete(request: DeleteRequest, options?: CallOptions): Promise<OperationReport>;
   upload(request: UploadRequest, options?: CallOptions): Promise<UploadResponse>;
+  /** Собрать ZIP из путей в папке (§9.16). Ответ — как у upload. */
+  archive(request: ArchiveRequest, options?: CallOptions): Promise<UploadResponse>;
+  /** Распаковать ZIP (§9.17). */
+  extract(request: ExtractRequest, options?: CallOptions): Promise<ExtractResponse>;
   /** Поиск по именам в поддереве (§9.15). Бэкенд без поиска отвечает `unsupported`. */
   search(request: SearchRequest, options?: CallOptions): Promise<SearchResponse>;
   /** Завершение tus-загрузки (§9.12). Бэкенд без tus отвечает `unsupported`. */

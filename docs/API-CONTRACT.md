@@ -334,6 +334,35 @@ Response: { node: Node; items: Node[]; truncated: boolean; scanned: number }
 файлов контрактом не предусмотрен. Требует capability `search` у хранилища; `features.search`
 отражает наличие операции.
 
+### 9.16 `archive` — собрать ZIP
+
+```ts
+Request:  { paths: string[]; target: string; name?: string; onConflict?: ConflictStrategy }
+Response: { node: Node; renamed: boolean; requestedName: string }   // как у upload
+```
+`paths` — файлы и папки (папки рекурсивно, из любых хранилищ с `download`), `target` — папка
+назначения (хранилище с `upload`). Имя: `name` (+`.zip`), иначе имя единственного источника без
+расширения либо `archive`. Архив проходит путь обычной загрузки: санитизация имени, политика,
+`onConflict`. Бюджеты: `limits.maxTransferEntries` записей и `limits.archiveMaxBytes` несжатых
+байт — превышение даёт `too_large` до записи результата. Формат один — `zip`
+(`operations.archive.formats`). Синхронно; для очень больших наборов предусмотрен будущий
+асинхронный режим (`features.jobs`).
+
+### 9.17 `extract` — распаковать ZIP
+
+```ts
+Request:  { path: string; target?: string; onConflict?: ConflictStrategy }
+Response: { node: Node; total: number; extracted: number; skipped: {name: string; code: ErrorCode; message: string}[] }
+```
+Без `target` рядом с архивом создаётся папка с именем архива (занято — «имя (2)»); `node` —
+папка назначения. Каждая запись проходит путь обычной загрузки/создания папки (валидация имени,
+блок-лист расширений, лимит размера, `onConflict` для файлов); отвергнутые записи не прерывают
+распаковку, а попадают в `skipped` (первые 100) с кодом причины. Пути записей с `..`,
+абсолютные и с пустыми сегментами отвергаются (zip-slip). До первого байта проверяются число
+записей (`limits.maxTransferEntries`) и суммарный несжатый размер (`limits.archiveMaxBytes`) —
+иначе `too_large`. Некорректный ZIP — `invalid_operation`. Требует `download` у хранилища архива
+и `upload`+`mkdir` у назначения; `features.archive === true`, когда доступны обе операции.
+
 ### 9.12 `upload-finalize` — завершение tus-загрузки (только при `upload.chunked === true`)
 
 ```ts
@@ -347,8 +376,8 @@ Response: { node: Node; renamed: boolean; requestedName: string }   // как у
 ## 10. Зарезервированные операции (имена закреплены, семантика — в будущих версиях)
 
 `write` (`{path, content}`),
-(`upload-finalize`, `preview`, `thumbnail` и `search` реализованы — §9.12–§9.15),
-`archive` (`{paths, target, format}`), `extract` (`{path, target}`), `visibility` (`{path, visibility}`),
+(`upload-finalize`, `preview`, `thumbnail`, `search`, `archive`, `extract` реализованы — §9.12–§9.17),
+`visibility` (`{path, visibility}`),
 `jobs/status`, `jobs/cancel`, `jobs/list`.
 
 Асинхронный режим: операция с `OperationInfo.async === true` может вернуть вместо результата

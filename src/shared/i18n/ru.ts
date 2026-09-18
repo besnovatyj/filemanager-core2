@@ -40,6 +40,12 @@ export const ru: Dictionary = {
   'cmd.toggleNavPane': 'Панель навигации',
   'cmd.toggleQueue': 'Операции',
   'cmd.togglePreview': 'Область предпросмотра',
+  'cmd.archive': 'Добавить в архив',
+  'cmd.extract': 'Извлечь',
+  'queue.task.archive': 'Архивирование ({count})',
+  'queue.task.extract': 'Распаковка {name}',
+  'dialog.extract.title': 'Распаковка',
+  'dialog.extract.summary': 'Извлечено {extracted} из {total}. Пропущено: {skipped}.',
   'cmd.search': 'Поиск',
   'cmd.search.clear': 'Закрыть поиск',
 

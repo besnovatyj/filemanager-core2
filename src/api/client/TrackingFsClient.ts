@@ -6,7 +6,7 @@ import type {Node} from '@/domain/node/Node';
 import type {DescribeResponse} from '@/api/contract/describe';
 import type {
   CallOptions, ContentRequest, ContentResponse, DeleteRequest, ListRequest, ListResponse, MkdirRequest,
-  RenameRequest, StatRequest, TransferRequest, TreeRequest, TreeResponse, UploadFinalizeRequest, UploadRequest, UploadResponse, SearchRequest, SearchResponse} from '@/api/contract/operations';
+  RenameRequest, StatRequest, TransferRequest, TreeRequest, TreeResponse, UploadFinalizeRequest, UploadRequest, UploadResponse, SearchRequest, SearchResponse, ArchiveRequest, ExtractRequest, ExtractResponse} from '@/api/contract/operations';
 import type {OperationReport} from '@/api/contract/report';
 import type {FsClient} from './FsClient';
 
@@ -64,6 +64,14 @@ export class TrackingFsClient implements FsClient {
 
   upload(request: UploadRequest, options?: CallOptions): Promise<UploadResponse> {
     return this.activity.track(this.inner.upload(request, options));
+  }
+
+  archive(request: ArchiveRequest, options?: CallOptions): Promise<UploadResponse> {
+    return this.activity.track(this.inner.archive(request, options));
+  }
+
+  extract(request: ExtractRequest, options?: CallOptions): Promise<ExtractResponse> {
+    return this.activity.track(this.inner.extract(request, options));
   }
 
   search(request: SearchRequest, options?: CallOptions): Promise<SearchResponse> {

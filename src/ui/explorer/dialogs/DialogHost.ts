@@ -106,7 +106,7 @@ export class DialogHost {
         const message = typeof r.error === 'string' ? r.error : r.error instanceof ApiError ? apiErrorMessage(r.error) : r.error.message;
         const details = r.error instanceof ApiError && r.error.path ? h('div', {class: 'fm-muted', text: r.error.path, style: {marginTop: '6px', wordBreak: 'break-all'}}) : null;
         options = {
-          title: r.title || t('dialog.error.title'), icon: 'danger', body: h('div', {}, h('p', {text: message}), details),
+          title: r.title || t('dialog.error.title'), icon: 'danger', body: h('div', {}, h('p', {text: message, style: {whiteSpace: 'pre-line'}}), details),
           buttons: [{label: t('dialog.ok'), variant: 'primary', isDefault: true, onClick: () => { r.resolve(); done(); }}],
           onCancel: () => { r.resolve(); done(); },
         };
