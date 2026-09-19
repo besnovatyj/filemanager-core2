@@ -1,0 +1,1 @@
+{"version":3,"file":"nameMatcher.d.ts","sourceRoot":"","sources":["../../../src/domain/search/nameMatcher.ts"],"names":[],"mappings":"AAIA;;;;;;GAMG;AACH,MAAM,WAAW,WAAW;IAC1B,QAAQ,CAAC,MAAM,EAAE,OAAO,CAAC;IACzB,OAAO,CAAC,IAAI,EAAE,MAAM,GAAG,OAAO,CAAC;CAChC;AAED,wBAAgB,iBAAiB,CAAC,KAAK,EAAE,MAAM,GAAG,WAAW,CAU5D"}

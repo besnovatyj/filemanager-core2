@@ -1,0 +1,1 @@
+{"version":3,"file":"FmStatusBar.d.ts","sourceRoot":"","sources":["../../../src/ui/explorer/FmStatusBar.ts"],"names":[],"mappings":"AAaA,OAAO,KAAK,EAAC,YAAY,EAAC,MAAM,QAAQ,CAAC;AAWzC,2GAA2G;AAC3G,qBAAa,WAAY,SAAQ,WAAW;IAC1C,OAAO,CAAC,IAAI,CAAgB;IAC5B,OAAO,CAAC,QAAQ,CAAC,WAAW,CAAyB;IAErD,IAAI,CAAC,IAAI,EAAE,YAAY,GAAG,IAAI;IAI9B,iBAAiB,IAAI,IAAI;IAiEzB,oBAAoB,IAAI,IAAI;CAG7B"}

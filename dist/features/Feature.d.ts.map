@@ -1,0 +1,1 @@
+{"version":3,"file":"Feature.d.ts","sourceRoot":"","sources":["../../src/features/Feature.ts"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAC,eAAe,EAAC,MAAM,4BAA4B,CAAC;AAChE,OAAO,KAAK,EAAC,cAAc,EAAC,MAAM,2BAA2B,CAAC;AAE9D;;;;GAIG;AACH,MAAM,WAAW,OAAO;IACtB,uCAAuC;IACvC,IAAI,CAAC,GAAG,EAAE,cAAc,EAAE,QAAQ,EAAE,eAAe,GAAG,IAAI,CAAC;IAC3D,OAAO,IAAI,IAAI,CAAC;CACjB"}
